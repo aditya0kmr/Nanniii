@@ -15,28 +15,20 @@ export function Capsule() {
     const [isHovered, setIsHovered] = useState(false)
 
     // Typewriter State
-    const fullMessage = `
-    // INCOMING TRANSMISSION //
-    // RE: BIRTHDAY PROTOCOL //
+    const fullMessage = `My dearest Nanniii,
 
-    Dearest Nanniii,
+Every time your name crosses my mind, a gentle warmth fills my heart — like sunlight slipping through clouds after the rain. You are that sunshine in my life, my calm when everything feels heavy, my reason to smile even on the dullest days.
 
-    As you complete another orbital rotation,
-    data analysis indicates maximum joy levels.
+I'm so sorry, my love, that I can't be with you right now — especially on your birthday. Not being there to see your beautiful smile or to celebrate your day hurts more than I can say. I know we don't talk or connect every day, and sometimes our silence feels long… but distance and time could never dull what I feel for you. You live right here — closest to my heart, always and forever.
 
-    Each star in this sector represents a
-    shared memory file. Access them often.
+I also know I've failed to give you the presence and attention you deserve, especially this past year. There were moments I should've been by your side, moments I should've shown love instead of excuses. But Nanniii, please believe me when I say — everything I'm doing, every effort and every struggle — it's all for us. I promise you, this time apart, these sacrifices… they'll all be worth it someday.
 
-    Your mission objectives for this cycle:
-    1. Explore unknown sectors.
-    2. Maintain high wonder levels.
-    3. Accept maximizing love inputs.
+You've always loved me so selflessly — caring for me, worrying about me, standing by me no matter what. You see through my moods, my distance, my distractions — and still, you choose to love me anyway. I know I haven't always respected that love the way I should have. I've been lost sometimes — caught up with my friends or my own world — and I'm sorry for that. You deserve to feel cherished every single day.
 
-    Status: HAPPINESS_OPTIMAL
-    
-    // END TRANSMISSION //
-    - Aadi
-    `
+If there's one thing you should always know, it's this — my love for you doesn't fade. It grows quietly, deeply, endlessly. You are my peace, my comfort, my home. No matter where life takes us or how long the distance stretches, I'll always find my way back to you.
+
+With all my love, always,
+Your Aadi 💛`
     const [displayedText, setDisplayedText] = useState("")
 
     // Animation Refs
