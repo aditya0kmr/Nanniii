@@ -3,10 +3,21 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" /> <!-- Ideally we'd change this too, but skipping for now -->
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A Celestial Journey through Memories. Happy Birthday!" />
+  
+  <!-- SEO & Social -->
   <title>Happy Birthday Nandini!</title>
+  <meta name="description" content="A Celestial Journey through Memories. Happy Birthday!" />
+  <meta property="og:title" content="Happy Birthday Nandini!" />
+  <meta property="og:description" content="A Celestial Journey through Memories exploring our world, stars, and future." />
+  <meta property="og:image" content="/preview-image.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Security -->
+  <!-- Allow scripts from self and unpkg/three (if needed), images from self, unpkg, and data URIs -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://unpkg.com https://*.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://unpkg.com;">
 </head>
 
 <body>

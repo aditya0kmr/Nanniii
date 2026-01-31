@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/purity */
+/* eslint-disable react/no-unknown-property */
 import React, { useRef, useState, useMemo, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Text, Float, Sparkles, Html } from '@react-three/drei'
@@ -9,7 +9,7 @@ import * as THREE from 'three'
 // ═══════════════════════════════════════════════════════════════════════════
 function Confetti({ isExploding }) {
     const count = 200
-    const particles = useMemo(() => {
+    const [particles] = useState(() => {
         return new Array(count).fill().map(() => ({
             position: new THREE.Vector3((Math.random() - 0.5) * 1, 0, (Math.random() - 0.5) * 1),
             velocity: new THREE.Vector3((Math.random() - 0.5) * 0.3, Math.random() * 0.4 + 0.1, (Math.random() - 0.5) * 0.3),
@@ -17,7 +17,7 @@ function Confetti({ isExploding }) {
             scale: Math.random() * 0.5 + 0.5,
             rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0]
         }))
-    }, [])
+    })
 
     const groupRef = useRef()
 

@@ -93,6 +93,14 @@ class SoundEngine {
 
 const engine = new SoundEngine()
 
+/**
+ * Procedural Audio Manager using Web Audio API.
+ * Generates ambient drones and sound effects (clicks, hovers).
+ * Manages global mute state and audio context resumption.
+ * 
+ * @component
+ * @returns {JSX.Element} The Audio UI controls (Mute/Init button).
+ */
 export function AudioManager() {
     const [started, setStarted] = useState(false)
     const [muted, setMuted] = useState(false)
@@ -105,23 +113,35 @@ export function AudioManager() {
         setStarted(true)
     }
 
-    const toggleMute = () => {
+    useEffect(() => {
+        // Handle Mute State
         if (engine.masterGain) {
-            engine.masterGain.gain.setValueAtTime(muted ? 0.3 : 0, engine.ctx.currentTime)
-            setMuted(!muted)
+            // Ramp to avoid clicks
+            const now = engine.ctx.currentTime
+            if (muted) {
+                engine.masterGain.gain.cancelScheduledValues(now)
+                engine.masterGain.gain.setValueAtTime(engine.masterGain.gain.value, now)
+                engine.masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5)
+            } else {
+                engine.masterGain.gain.cancelScheduledValues(now)
+                engine.masterGain.gain.setValueAtTime(engine.masterGain.gain.value, now)
+                engine.masterGain.gain.exponentialRampToValueAtTime(0.3, now + 0.5)
+            }
         }
+    }, [muted])
+
+    const toggleMute = () => {
+        setMuted(!muted)
     }
 
     // Global Event Listeners for SFX
     useEffect(() => {
         const handleClick = () => {
-            engine.playClick()
+            if (!muted) engine.playClick()
         }
 
-        const checkHover = (e) => {
-            if (e.target.tagName === 'BUTTON' || e.target.closest('[role="button"]') || e.target.tagName === 'A') {
-                // engine.playHover() 
-            }
+        const checkHover = () => {
+            // Optional: Implement if needed
         }
 
         window.addEventListener('click', handleClick)
@@ -131,14 +151,15 @@ export function AudioManager() {
             window.removeEventListener('click', handleClick)
             window.removeEventListener('mouseover', checkHover)
         }
-    }, [])
+    }, [muted]) // Re-bind if mute state changes affects logic, or use mutable ref
 
     if (!started) {
         return (
-            <div className="fixed bottom-10 right-10 z-50">
+            <div className="fixed bottom-10 right-10 z-[60]">
                 <button
                     onClick={handleStart}
                     className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(0,255,255,0.3)] hover:bg-white/20 hover:scale-105 transition-all animate-pulse"
+                    aria-label="Start Audio Experience"
                 >
                     🔊 INITIALIZE AUDIO
                 </button>
@@ -147,12 +168,14 @@ export function AudioManager() {
     }
 
     return (
-        <div className="fixed bottom-10 right-10 z-50">
+        <div className="fixed bottom-10 right-10 z-[60]">
             <button
                 onClick={toggleMute}
-                className="bg-black/40 backdrop-blur-md border border-white/10 text-xs text-white/50 px-4 py-2 rounded-full hover:text-white transition-colors"
+                className={`transition-all duration-300 backdrop-blur-md border px-4 py-2 rounded-full flex items-center gap-2 ${muted ? 'bg-red-900/40 border-red-500/30 text-red-200' : 'bg-cyan-900/40 border-cyan-500/30 text-cyan-200 shadow-[0_0_10px_rgba(0,255,255,0.2)]'}`}
+                aria-label={muted ? "Unmute Audio" : "Mute Audio"}
             >
-                {muted ? "UNMUTE" : "AUDIO ACTIVE"}
+                <span>{muted ? "🔇" : "🔊"}</span>
+                <span className="text-xs font-bold tracking-widest">{muted ? "MUTED" : "AUDIO ON"}</span>
             </button>
         </div>
     )

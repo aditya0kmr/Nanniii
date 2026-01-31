@@ -1,18 +1,19 @@
 import React, { useRef, useState, useMemo } from 'react'
-import { Text, Float, RoundedBox, Sparkles } from '@react-three/drei'
+import { Text, Float, RoundedBox, Sparkles, Image } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
 // --- CURATED PHOTOS (Using colors as placeholders to avoid image loading issues) ---
+// --- CURATED PHOTOS ---
 const PHOTOS = [
-    { color: "#ff6b6b", caption: "Love", year: "2024" },
-    { color: "#4ecdc4", caption: "Adventure", year: "2023" },
-    { color: "#45b7d1", caption: "Dreams", year: "2022" },
-    { color: "#96ceb4", caption: "Peace", year: "2021" },
-    { color: "#ffeaa7", caption: "Joy", year: "2020" },
-    { color: "#dfe6e9", caption: "Serenity", year: "2019" },
-    { color: "#a29bfe", caption: "Magic", year: "2018" },
-    { color: "#fd79a8", caption: "Memories", year: "2017" },
+    { color: "#ff6b6b", caption: "Love", year: "2024", img: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80" },
+    { color: "#4ecdc4", caption: "Adventure", year: "2023", img: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=400&q=80" },
+    { color: "#45b7d1", caption: "Dreams", year: "2022", img: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=400&q=80" },
+    { color: "#96ceb4", caption: "Peace", year: "2021", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" },
+    { color: "#ffeaa7", caption: "Joy", year: "2020", img: "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=400&q=80" },
+    { color: "#dfe6e9", caption: "Serenity", year: "2019", img: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=400&q=80" },
+    { color: "#a29bfe", caption: "Magic", year: "2018", img: "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&w=400&q=80" },
+    { color: "#fd79a8", caption: "Memories", year: "2017", img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=400&q=80" },
 ]
 
 // Single Polaroid Card Component
@@ -72,17 +73,18 @@ function PolaroidCard({ initialPosition, photo, index, isSelected, onSelect }) {
                 />
             </RoundedBox>
 
-            {/* Photo Area (Colored) */}
-            <mesh position={[0, 0.2, 0.05]}>
+            {/* Photo Area */}
+            <mesh position={[0, 0.2, 0.052]}>
                 <planeGeometry args={[1.9, 1.9]} />
-                <meshStandardMaterial
-                    color={photo.color}
-                    roughness={0.4}
-                    metalness={0.1}
-                    emissive={photo.color}
-                    emissiveIntensity={hovered || isSelected ? 0.3 : 0.1}
-                />
+                <meshBasicMaterial color={photo.color} />
             </mesh>
+            <Image
+                url={photo.img}
+                position={[0, 0.2, 0.06]}
+                scale={[1.9, 1.9]}
+                transparent
+                opacity={0.9}
+            />
 
             {/* Caption Text */}
             <Text

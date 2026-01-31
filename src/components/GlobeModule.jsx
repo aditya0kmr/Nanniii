@@ -5,6 +5,14 @@ import { World } from './World'
 import { trips as initialTrips } from '../data/trips'
 import * as THREE from 'three'
 
+/**
+ * Interactive 3D Globe Module for trip planning.
+ * Allows users to search for locations, view trips on a globe, and persist plans to localStorage.
+ * Uses Nominatim API for geocoding.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered GlobeModule.
+ */
 export function GlobeModule() {
     const [allTrips, setAllTrips] = useState(initialTrips)
     const [selectedLoc, setSelectedLoc] = useState(null) // { lat, lng }
@@ -18,13 +26,27 @@ export function GlobeModule() {
 
     // Helper removed as unused
 
+    const abortControllerRef = React.useRef(null)
+
     const performSearch = async () => {
         if (!searchQuery.trim()) return
+
+        // Cancel previous request
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort()
+        }
+
+        // Create new controller
+        abortControllerRef.current = new AbortController()
+
         setIsSearching(true)
         setErrorMsg(null)
 
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`)
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`,
+                { signal: abortControllerRef.current.signal }
+            )
             const data = await response.json()
 
             if (data && data.length > 0) {
@@ -38,10 +60,14 @@ export function GlobeModule() {
             } else {
                 setErrorMsg("Location not found. Try a major city.")
             }
-        } catch {
-            setErrorMsg("Search failed. Check internet.")
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                setErrorMsg("Search failed. Check internet.")
+            }
         } finally {
-            setIsSearching(false)
+            if (abortControllerRef.current && !abortControllerRef.current.signal.aborted) {
+                setIsSearching(false)
+            }
         }
     }
 
@@ -57,7 +83,9 @@ export function GlobeModule() {
             notes: details.notes
         }
 
-        setAllTrips([...allTrips, newTrip])
+        const updatedTrips = [...allTrips, newTrip]
+        setAllTrips(updatedTrips)
+        localStorage.setItem('trips', JSON.stringify(updatedTrips))
         setSelectedLoc(null)
     }
 
@@ -78,7 +106,12 @@ export function GlobeModule() {
                                 placeholder="Search World (e.g. Paris, Tokyo)..."
                                 className="bg-transparent text-white px-4 py-2 outline-none w-full placeholder-gray-500"
                                 value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value)
+                                    // Debounce could be here, but simpler to just let user type and hit enter
+                                    // or use a useEffect for auto-search.
+                                    // For now, let's keep it manual 'GO' or Enter to strictly control API calls.
+                                }}
                                 onKeyDown={(e) => e.key === 'Enter' && performSearch()}
                             />
                             <button
@@ -214,4 +247,4 @@ export function GlobeModule() {
     )
 }
 
-export default GlobeModule
+

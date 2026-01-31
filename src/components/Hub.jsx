@@ -1,10 +1,12 @@
-import React, { useRef, useState, Suspense } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { OrbitControls, Stars, Text, Float, Sparkles } from '@react-three/drei'
 import { useLocation } from 'wouter'
 import { Layout } from './Layout'
 import { CanvasLoader as Loader } from './Loader'
 import * as THREE from 'three'
+import { COLORS } from '../theme/colors'
+import { PLANET_POSITIONS, ROUTES, CAMERA_POSITIONS } from '../utils/constants'
 
 // Premium minimal icon components
 function WireframeGlobe({ hovered, color }) {
@@ -674,12 +676,28 @@ function CentralHologram({ activeModule }) {
     )
 }
 
+/**
+ * The Central Navigation Hub of the application.
+ * Renders a 3D scene with interactive planets representing different modules.
+ * Handles mobile detection and responsive camera positioning.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Hub component.
+ */
 export function Hub() {
     const [hoveredModule, setHoveredModule] = useState(null) // Route path of hovered planet
-    const isMobile = window.innerWidth < 768
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const mql = window.matchMedia('(max-width: 768px)')
+        setIsMobile(mql.matches)
+        const handler = (e) => setIsMobile(e.matches)
+        mql.addEventListener('change', handler)
+        return () => mql.removeEventListener('change', handler)
+    }, [])
 
     return (
-        <Layout cameraPosition={[0, 5, isMobile ? 25 : 15]} showBackButton={false}>
+        <Layout cameraPosition={isMobile ? CAMERA_POSITIONS.HUB_MOBILE : CAMERA_POSITIONS.HUB_DESKTOP} showBackButton={false}>
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
 
             {/* Cosmic Dust */}
@@ -695,44 +713,44 @@ export function Hub() {
             {/* Planets (Modules) - Pass setHoveredModule to them */}
             <group onPointerOut={() => setHoveredModule(null)}>
                 <Planet
-                    position={[7, 0, 0]}
-                    color="#6b9bd1"
+                    position={PLANET_POSITIONS.GLOBE}
+                    color={COLORS.modules.globe}
                     label="Travel Globe"
-                    route="/globe"
+                    route={ROUTES.GLOBE}
                     shape="wireframe-globe"
-                    onHover={(v) => v && setHoveredModule('/globe')}
+                    onHover={(v) => v && setHoveredModule(ROUTES.GLOBE)}
                 />
                 <Planet
-                    position={[2.16, 0, 6.66]}
-                    color="#d16b9b"
+                    position={PLANET_POSITIONS.PARCHMENT}
+                    color={COLORS.modules.parchment}
                     label="Love Letter"
-                    route="/parchment"
+                    route={ROUTES.PARCHMENT}
                     shape="origami-heart"
-                    onHover={(v) => v && setHoveredModule('/parchment')}
+                    onHover={(v) => v && setHoveredModule(ROUTES.PARCHMENT)}
                 />
                 <Planet
-                    position={[-5.66, 0, 4.12]}
-                    color="#d1c16b"
+                    position={PLANET_POSITIONS.STARS}
+                    color={COLORS.modules.stars}
                     label="Compliments"
-                    route="/stars"
+                    route={ROUTES.STARS}
                     shape="particle-constellation"
-                    onHover={(v) => v && setHoveredModule('/stars')}
+                    onHover={(v) => v && setHoveredModule(ROUTES.STARS)}
                 />
                 <Planet
-                    position={[-5.66, 0, -4.12]}
-                    color="#6bd19b"
+                    position={PLANET_POSITIONS.GALLERY}
+                    color={COLORS.modules.gallery}
                     label="Gallery"
-                    route="/gallery"
+                    route={ROUTES.GALLERY}
                     shape="holographic-cube"
-                    onHover={(v) => v && setHoveredModule('/gallery')}
+                    onHover={(v) => v && setHoveredModule(ROUTES.GALLERY)}
                 />
                 <Planet
-                    position={[2.16, 0, -6.66]}
-                    color="#9b6bd1"
+                    position={PLANET_POSITIONS.GIFT}
+                    color={COLORS.modules.gift}
                     label="Surprise!"
-                    route="/gift"
+                    route={ROUTES.GIFT}
                     shape="minimal-box"
-                    onHover={(v) => v && setHoveredModule('/gift')}
+                    onHover={(v) => v && setHoveredModule(ROUTES.GIFT)}
                 />
             </group>
 

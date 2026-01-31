@@ -1,16 +1,41 @@
-# React + Vite
+# Nanniii's Birthday Dimension 🌌
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, interactive 3D web experience built for a special birthday celebration. This application features a "Celestial Navigation Hub" leading to various immersive modules, all powered by React Three Fiber.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   **Celestial Hub**: An interactive 3D solar system menu navigation.
+-   **Travel Globe**: A 3D Earth to plan and visualize future trips (persisted locally).
+-   **Love Letter Parchment**: A 3D unfurling scroll with a heartfelt message.
+-   **Memory Nebula**: An interactive star field where stars reveal compliments.
+-   **Helix Gallery**: A spiraling 3D photo gallery with realistic Polaroid effects.
+-   **Chronosphere Gift**: A mysterious time-capsule surprise.
+-   **Procedural Audio**: Custom immersive soundscapes and effects.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+-   **Core**: React 19, Vite
+-   **3D Engine**: Three.js, @react-three/fiber, @react-three/drei
+-   **Styling**: TailwindCSS
+-   **State & Routing**: Wouter, LocalStorage
+-   **Audio**: Web Audio API (Custom Engine)
 
-## Expanding the ESLint configuration
+## 📦 Installation & Run
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Start Development Server**:
+    ```bash
+    npm run dev
+    ```
+3.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
+
+## 📄 License
+
+MIT License. See [LICENSE](./LICENSE) for details.
+

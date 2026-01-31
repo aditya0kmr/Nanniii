@@ -44,4 +44,4 @@ export function HelixGalleryModule() {
     )
 }
 
-export default HelixGalleryModule
+

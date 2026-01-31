@@ -13,8 +13,16 @@ export function BootSequence({ onComplete }) {
     const [index, setIndex] = useState(0)
 
     useEffect(() => {
+        // Check if seen before
+        const hasSeen = localStorage.getItem('hasSeenIntro')
+        if (hasSeen === 'true') {
+            onComplete()
+            return
+        }
+
         if (index >= BOOT_LOGS.length) {
             // Finished logs, wait a beat then complete
+            localStorage.setItem('hasSeenIntro', 'true')
             const timeout = setTimeout(onComplete, 800)
             return () => clearTimeout(timeout)
         }

@@ -10,7 +10,7 @@ function InteractiveStar({ position, message, color = "#ffeeaa" }) {
 
     // Randomize initial phase for twinkling
     // eslint-disable-next-line
-    const phase = useMemo(() => Math.random() * Math.PI * 2, [])
+    const [phase] = useState(() => Math.random() * Math.PI * 2)
 
     useFrame((state) => {
         if (meshRef.current) {
@@ -55,17 +55,14 @@ function InteractiveStar({ position, message, color = "#ffeeaa" }) {
 
 export function ComplimentStars() {
     // Generate random positions for the stars in a cloud
-    const stars = useMemo(() => {
+    const [stars] = useState(() => {
         return compliments.map((msg, i) => {
-            // eslint-disable-next-line
             const x = (Math.random() - 0.5) * 15
-            // eslint-disable-next-line
             const y = (Math.random() - 0.5) * 10
-            // eslint-disable-next-line
             const z = (Math.random() - 0.5) * 10
             return { id: i, pos: [x, y, z], msg }
         })
-    }, [])
+    })
 
     return (
         <group>

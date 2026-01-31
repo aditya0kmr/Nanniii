@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Switch, Route } from 'wouter'
 import { ScreenLoader } from './components/Loader'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 // Lazy Load Route Components for better chunking
 const Hub = React.lazy(() => import('./components/Hub').then(module => ({ default: module.Hub })))
@@ -14,7 +15,7 @@ import { AudioManager } from './components/AudioManager'
 import { BootSequence } from './components/BootSequence'
 import { StarDustCursor } from './components/StarDustCursor'
 
-function App() {
+export function App() {
   const [booted, setBooted] = React.useState(false)
 
   if (!booted) {
@@ -24,20 +25,22 @@ function App() {
   return (
     <div className="w-full h-full relative font-sans">
       <StarDustCursor />
-      <Suspense fallback={<ScreenLoader />}>
-        <Switch>
-          <Route path="/" component={Hub} />
-          <Route path="/globe" component={GlobeModule} />
-          <Route path="/parchment" component={ParchmentModule} />
-          <Route path="/stars" component={StarFieldModule} />
-          <Route path="/gallery" component={HelixGalleryModule} />
-          <Route path="/gift" component={GiftModule} />
-          <Route>
-            {/* Default to Hub or 404 */}
-            <Hub />
-          </Route>
-        </Switch>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<ScreenLoader />}>
+          <Switch>
+            <Route path="/" component={Hub} />
+            <Route path="/globe" component={GlobeModule} />
+            <Route path="/parchment" component={ParchmentModule} />
+            <Route path="/stars" component={StarFieldModule} />
+            <Route path="/gallery" component={HelixGalleryModule} />
+            <Route path="/gift" component={GiftModule} />
+            <Route>
+              {/* Default to Hub or 404 */}
+              <Hub />
+            </Route>
+          </Switch>
+        </Suspense>
+      </ErrorBoundary>
 
       <AudioManager />
 
@@ -50,4 +53,4 @@ function App() {
   )
 }
 
-export default App
+
