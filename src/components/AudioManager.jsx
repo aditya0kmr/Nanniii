@@ -114,7 +114,15 @@ export function AudioManager() {
     }
 
     useEffect(() => {
+        // Load persisted mute state
+        const savedMute = localStorage.getItem('audio_muted') === 'true'
+        setMuted(savedMute)
+    }, [])
+
+    useEffect(() => {
         // Handle Mute State
+        localStorage.setItem('audio_muted', muted)
+
         if (engine.masterGain) {
             // Ramp to avoid clicks
             const now = engine.ctx.currentTime
@@ -131,7 +139,7 @@ export function AudioManager() {
     }, [muted])
 
     const toggleMute = () => {
-        setMuted(!muted)
+        setMuted(prev => !prev)
     }
 
     // Global Event Listeners for SFX

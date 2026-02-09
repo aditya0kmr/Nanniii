@@ -20,3 +20,21 @@ export const ROUTES = {
     GALLERY: '/gallery',
     GIFT: '/gift'
 }
+
+export const BIRTH_DATE = {
+    month: 1, // 1-12 (January)
+    day: 24   // 1-31
+}
+
+export const COMPLIMENTS = [
+    "You light up every room you enter. ✨",
+    "Your kindness is a gift to the world. 🎁",
+    "You are capable of amazing things. 🚀",
+    "Your smile is contagious. 😊",
+    "The world is better with you in it. 🌍",
+    "You radiate positivity and warmth. ☀️",
+    "Your creativity knows no bounds. 🎨",
+    "You are loved more than you know. ❤️",
+    "Keep shining, you star! ⭐",
+    "Your perspective is unique and valuable. 💎"
+]

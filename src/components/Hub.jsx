@@ -608,11 +608,19 @@ function Planet({ position, color, label, route, shape = 'sphere', onHover }) {
 // --- CENTRAL HOLOGRAM SYSTEM ---
 function CentralHologram({ activeModule }) {
     const groupRef = useRef()
+    const pulseRef = useRef()
 
     useFrame((state, delta) => {
+        const time = state.clock.elapsedTime
         if (groupRef.current) {
             // constantly rotate the central projection
             groupRef.current.rotation.y += delta * 0.5
+        }
+        if (pulseRef.current) {
+            // Breathing animation
+            const scale = 1.2 + Math.sin(time * 2) * 0.1
+            pulseRef.current.scale.set(scale, scale, scale)
+            pulseRef.current.rotation.y -= delta * 0.2
         }
     })
 
@@ -629,6 +637,16 @@ function CentralHologram({ activeModule }) {
                         toneMapped={false}
                     />
                     <pointLight intensity={2} color="#ffaa00" distance={20} decay={2} />
+                </mesh>
+                {/* Pulse Aura */}
+                <mesh ref={pulseRef} scale={[1.2, 1.2, 1.2]}>
+                    <sphereGeometry args={[2, 32, 32]} />
+                    <meshBasicMaterial
+                        color="#ff5500"
+                        transparent
+                        opacity={0.1}
+                        side={THREE.BackSide}
+                    />
                 </mesh>
             </Float>
         )

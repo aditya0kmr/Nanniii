@@ -14,6 +14,7 @@ const GiftModule = React.lazy(() => import('./components/GiftModule').then(modul
 import { AudioManager } from './components/AudioManager'
 import { BootSequence } from './components/BootSequence'
 import { StarDustCursor } from './components/StarDustCursor'
+import { BIRTH_DATE, COMPLIMENTS } from './utils/constants'
 
 export function App() {
   const [booted, setBooted] = React.useState(false)
@@ -21,6 +22,26 @@ export function App() {
   if (!booted) {
     return <BootSequence onComplete={() => setBooted(true)} />
   }
+
+  // Dynamic Title Effect
+  React.useEffect(() => {
+    const originalTitle = document.title
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = "✨ The stars are waiting..."
+      } else {
+        document.title = "Happy Birthday Nandini! 🎂"
+        setTimeout(() => {
+          document.title = originalTitle
+        }, 2000)
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
+  }, [])
 
   return (
     <div className="w-full h-full relative font-sans">
@@ -45,12 +66,36 @@ export function App() {
       <AudioManager />
 
       <div className="absolute bottom-4 left-4 pointer-events-none z-50">
-        <h1 className="text-xl font-bold text-white tracking-widest uppercase opacity-50">
-          Nandini's Dimension
-        </h1>
+        <Greeting />
       </div>
     </div>
   )
 }
 
+function Greeting() {
+  const [text, setText] = React.useState("")
 
+  React.useEffect(() => {
+    const today = new Date()
+    // Months are 0-indexed in JS, so we compare month+1 to our 1-indexed constant
+    const isBirthday = (today.getMonth() + 1 === BIRTH_DATE.month) &&
+      (today.getDate() === BIRTH_DATE.day)
+
+    if (isBirthday) {
+      setText("Happy Birthday Nandini!")
+    } else {
+      // Pick a random compliment based on the day of the year (pseudo-random but stable for the day)
+      // or just truly random on every load? Let's go with truly random for variety on refresh.
+      const randomIndex = Math.floor(Math.random() * COMPLIMENTS.length)
+      setText(COMPLIMENTS[randomIndex])
+    }
+  }, [])
+
+  if (!text) return null
+
+  return (
+    <h1 className="text-xl font-bold text-white tracking-widest uppercase opacity-70 animate-pulse">
+      {text}
+    </h1>
+  )
+}

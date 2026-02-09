@@ -233,6 +233,9 @@ export function GlobeModule() {
                 maxDistance={20}
                 zoomSpeed={0.5} // Precise zoom
                 enablePan={false}
+                enableDamping={true}
+                dampingFactor={0.05}
+                rotateSpeed={0.5}
                 autoRotate={!selectedLoc}
                 autoRotateSpeed={0.5}
             />

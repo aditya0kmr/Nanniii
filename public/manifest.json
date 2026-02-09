@@ -1,0 +1,16 @@
+{
+    "name": "Nanniii's Birthday Dimension",
+    "short_name": "Birthday 3D",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "description": "A Celestial Journey through Memories.",
+    "icons": [
+        {
+            "src": "vite.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
